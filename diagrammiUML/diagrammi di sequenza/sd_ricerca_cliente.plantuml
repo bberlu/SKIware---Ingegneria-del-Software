@@ -1,0 +1,80 @@
+@startuml
+
+title sd RicercaCliente
+
+actor Amministratore
+participant "GestoreUtenti" as Gestore
+participant ":Cliente" as Cliente
+
+alt la chiave di ricerca è il codice
+    Amministratore -> Gestore : ricercaClienteCodice(codice)
+    activate Gestore
+    loop forEach cliente
+        Gestore -> Cliente : getCodice()
+        activate Cliente
+        Cliente --> Gestore : codiceUnivoco
+        deactivate Cliente
+        break codice == getCodice()
+            Gestore -> Cliente : getInfoCliente()
+            activate Cliente
+            Cliente --> Gestore : datiCliente
+            deactivate Cliente
+            Gestore --> Amministratore : dati cliente()
+        end
+    end
+    deactivate Gestore
+
+else la chiave di ricerca è il codice fiscale
+    Amministratore -> Gestore : ricercaClienteCF(cf)
+    activate Gestore
+    loop forEach cliente
+        Gestore -> Cliente : getCodiceFiscale()
+        activate Cliente
+        Cliente --> Gestore : cf_decifrato
+        deactivate Cliente
+        opt codiceFiscale == getCodiceFiscale()
+            Gestore -> Cliente : getInfoCliente()
+            activate Cliente
+            Cliente --> Gestore : datiCliente
+            deactivate Cliente
+            Gestore --> Amministratore : dati cliente()
+        end
+    end
+    deactivate Gestore
+
+else la chiave di ricerca è nome e cognome
+    Amministratore -> Gestore : ricercaClienteNomeCognome(nome, cognome)
+    activate Gestore
+    loop forEach cliente
+        Gestore -> Cliente : getNome()
+        activate Cliente
+        Cliente --> Gestore : nomeCliente
+        deactivate Cliente
+        Gestore -> Cliente : getCognome()
+        activate Cliente
+        Cliente --> Gestore : cognomeCliente
+        deactivate Cliente
+        opt (nome == getNome()) and (cognome == getCognome())
+            Gestore -> Cliente : getInfoCliente()
+            activate Cliente
+            Cliente --> Gestore : datiCliente
+            deactivate Cliente
+            Gestore --> Amministratore : dati cliente()
+        end
+    end
+    deactivate Gestore
+end
+
+opt cliente non trovato
+    Gestore --> Amministratore : cliente non trovato()
+    opt l'attore primario vuole inserire un nuovo cliente
+        Amministratore -> Gestore : aggiungiCliente()
+        activate Gestore
+        create ":Cliente" as NuovoCliente
+        Gestore -> NuovoCliente : <<create>>
+        Gestore --> Amministratore : inserimento ok()
+        deactivate Gestore
+    end
+end
+
+@enduml

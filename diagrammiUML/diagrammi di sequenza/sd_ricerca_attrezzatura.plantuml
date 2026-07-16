@@ -1,0 +1,44 @@
+@startuml
+
+title sd RicercaAttrezzatura
+
+actor Amministratore
+participant "GestoreAttrezzatura" as Gestore
+participant ":AttrezzaturaPrincipale" as Attrezzatura
+
+Amministratore -> Gestore : ricercaAttrezzatura(tipo, livelloTecnico)
+activate Gestore
+
+loop forEach attrezzatura
+    Gestore -> Attrezzatura : getTipo()
+    activate Attrezzatura
+    Attrezzatura --> Gestore : tipoAttrezzatura
+    deactivate Attrezzatura
+
+    Gestore -> Attrezzatura : getLivelloTecnico()
+    activate Attrezzatura
+    Attrezzatura --> Gestore : livelloTecnico
+    deactivate Attrezzatura
+    
+    Gestore -> Attrezzatura : getStato()
+    activate Attrezzatura
+    Attrezzatura --> Gestore : statoAttrezzatura
+    deactivate Attrezzatura
+
+    opt (tipo == tipoAttrezzatura) and (livelloTecnico == getLivelloTecnico()) and (statoAttrezzatura == "Disponibile")
+        Gestore -> Attrezzatura : getDatiAttrezzatura()
+        activate Attrezzatura
+        Attrezzatura --> Gestore : datiAttrezzatura
+        deactivate Attrezzatura
+        
+        Gestore --> Amministratore : datiAttrezzatura
+    end
+end
+
+opt attrezzatura non trovata o non disponibile
+    Gestore --> Amministratore : errore: attrezzatura non disponibile()
+end
+
+deactivate Gestore
+
+@enduml

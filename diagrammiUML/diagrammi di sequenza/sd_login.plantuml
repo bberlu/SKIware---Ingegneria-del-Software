@@ -1,0 +1,51 @@
+@startuml
+
+title sd Login
+
+actor ":Amministratore\n/ :Ski-man" as Utente
+participant ":VistaLogin" as Vista
+participant ":GestoreUtenti" as Gestore
+participant ":UtilizzatoreRepository" as Repo
+participant ":Utilizzatore" as Utilizzatore
+
+activate Utente
+Utente -> Vista : inserisciCredenziali(codice, password)
+activate Vista
+
+Vista -> Gestore : autentica(codice, password)
+activate Gestore
+
+Gestore -> Repo : trovaPerId(codice)
+activate Repo
+Repo --> Gestore : utilizzatore
+deactivate Repo
+
+alt utilizzatore trovato e password corretta
+
+    Gestore --> Vista : utilizzatore autenticato
+    deactivate Gestore
+
+    Vista -> Utilizzatore : puoAccedere()
+    activate Utilizzatore
+    note right of Utilizzatore
+      il ruolo è il tipo della classe:
+      Amministratore e SkiMan possono
+      accedere, Cliente no (override)
+    end note
+    Utilizzatore --> Vista : esito
+    deactivate Utilizzatore
+
+    alt ruolo abilitato
+        Vista --> Utente : apre FinestraPrincipale\n(menu in base al ruolo)
+    else ruolo non abilitato (Cliente)
+        Vista --> Utente : errore: accesso riservato al personale()
+    end
+
+else credenziali non valide
+    Gestore --> Vista : null
+    Vista --> Utente : errore: credenziali non valide()
+end
+
+deactivate Vista
+deactivate Utente
+@enduml

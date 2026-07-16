@@ -1,0 +1,51 @@
+@startuml
+title sd InserisciAssegnamento
+
+actor Amministratore
+participant Assegnamento
+participant Cliente
+participant Servizio
+participant Ricevuta
+
+Amministratore -> Assegnamento : aggiungiAssegnamento()
+
+ref over Assegnamento, Cliente : RicercaCliente
+
+alt cliente trovato
+    
+    loop 1..* forEach servizio desiderato
+        Amministratore -> Assegnamento : inserisciServizio()
+        ref over Assegnamento, Servizio : RicercaAttrezzatura
+        
+        alt attrezzatura trovata e disponibile
+            Amministratore -> Assegnamento : selezionaFasciaOraria(fascia)
+        else attrezzatura non trovata o non disponibile
+            Assegnamento --> Amministratore : errore: attrezzatura non disponibile()
+        end
+    end
+
+    ref over Assegnamento : VincoloAperturaStagionale
+    
+    alt controllo stagionale positivo
+        ref over Assegnamento : VerificaFasciaOraria
+        
+        alt controllo fascia oraria positivo
+            Assegnamento -> Assegnamento : salvaAssegnamento() <<transazione>>
+            
+            ref over Assegnamento, Ricevuta : EmissioneRicevuta
+            
+            Assegnamento --> Amministratore : assegnamento ok()
+            
+        else fascia oraria non disponibile
+            Assegnamento --> Amministratore : errore: indisponibilità temporale()
+        end
+        
+    else controllo stagionale negativo
+        Assegnamento --> Amministratore : errore: data fuori stagione()
+    end
+
+else cliente non trovato
+    Assegnamento --> Amministratore : errore: cliente non trovato()
+end
+
+@enduml

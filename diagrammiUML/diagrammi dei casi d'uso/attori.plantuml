@@ -1,0 +1,14 @@
+@startuml
+skinparam actorStyle stickman
+
+actor "Utilizzatore" as Utilizzatore
+actor "Cliente" as Cliente
+actor "Ski-man" as Skiman
+actor "Amministratore" as Amministratore
+
+rectangle "Tempo" <<actor>> as Tempo
+
+Utilizzatore <|-- Cliente
+Utilizzatore <|-- Skiman
+Utilizzatore <|-- Amministratore
+@enduml

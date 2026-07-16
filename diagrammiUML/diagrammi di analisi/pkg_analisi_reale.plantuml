@@ -1,0 +1,30 @@
+@startuml
+hide empty members
+hide circle
+package "pkg Package di analisi" {
+
+  class Attività {
+    + Amministratore
+    + Assegnamento
+    + Carnet
+    + Cliente
+    + Prenotazione
+    + Ricevuta
+    + SkiMan
+    + <i>Utilizzatore</i>
+  }
+
+  class Attrezzatura {
+    + <i>Attrezzatura</i>
+    + <i>AttrezzaturaPrincipale</i>
+    + Armadietto
+    + Casco
+    + Scarpone
+    + Sci
+    + Snowboard
+  }
+
+  Attività .> Attrezzatura : <<use>>
+
+}
+@enduml

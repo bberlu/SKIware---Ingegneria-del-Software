@@ -1,0 +1,40 @@
+@startuml
+
+title sd VenditaGestioneCarnet
+
+
+actor ":Amministratore" as Admin
+participant ":GestoreCarnet" as Gestore
+participant ":Cliente" as Cliente
+
+activate Admin
+Admin -> Gestore : avviaVenditaCarnet()
+activate Gestore
+
+Gestore -> Cliente : verificaEsistenza()
+activate Cliente
+Cliente --> Gestore : esitoRicerca
+deactivate Cliente
+
+alt cliente trovato 
+    Gestore --> Admin : richiestaTipologia()
+    Admin -> Gestore : selezionaTipologia(es. 10 o 20 noleggi)
+    
+    Gestore -> Gestore : generaCodiceUnivoco()
+    
+    create participant ":Carnet" as Carnet
+    Gestore -> Carnet : create(codice, dataRilascio, validita, saldoIniziale)
+    activate Carnet
+    deactivate Carnet
+    
+    Gestore -> Cliente : associaCarnet(Carnet) 
+    Gestore -> Gestore : memorizzaDati()
+    Gestore --> Admin : confermaOperazione()
+    
+else cliente non trovato 
+    Gestore --> Admin : visualizzaMessaggioErrore() 
+end
+
+deactivate Gestore
+deactivate Admin
+@enduml

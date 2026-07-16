@@ -1,0 +1,33 @@
+@startuml
+
+title sd DisdettaPrenotazione
+actor Amministratore
+participant "Gestione\nPrenotazione" as Prenotazione
+participant Carnet
+
+Amministratore -> Prenotazione : disdiciPrenotazione(codice)
+
+ref over Prenotazione : RicercaPrenotazione
+
+alt prenotazione non trovata
+    Prenotazione --> Amministratore : errore: prenotazione non trovata()
+    
+else prenotazione trovata
+    ref over Prenotazione : VerificaFinestraTemporale48h
+    
+    alt disdetta >= 48h prima (rimborso)
+        
+        ref over Prenotazione, Carnet : DecurtazioneCredito
+        
+        Prenotazione -> Prenotazione : annullaPrenotazione()
+        Prenotazione --> Amministratore : disdetta con rimborso ok()
+        
+    else disdetta < 48h prima (nessun rimborso)
+        
+        Prenotazione -> Prenotazione : annullaPrenotazione()
+        Prenotazione --> Amministratore : errore: disdetta senza rimborso, credito perso()
+        
+    end
+end
+
+@enduml

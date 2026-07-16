@@ -1,0 +1,60 @@
+@startuml
+
+title sd CUDCliente
+
+
+actor "Amministratore" as Attore
+participant "Cliente" as Controller
+
+alt inserimento cliente
+    activate Attore
+    Attore -> Controller : aggiungiCliente()
+    activate Controller
+    
+    ref over Controller
+      RicercaCliente
+    end ref
+    
+    alt cliente già presente
+        Controller --> Attore : il cliente esiste già()
+    else else
+        create participant ":Cliente" as ClienteInst
+        Controller -->> ClienteInst : <<create>>
+        Controller --> Attore : inserimento ok()
+    end
+    
+else modifica cliente
+    Attore -> Controller : modificaCliente()
+    
+    ref over Controller
+      RicercaCliente
+    end ref
+    
+    alt cliente trovato
+        Controller -> ClienteInst : setInfoCliente()
+        activate ClienteInst
+        deactivate ClienteInst
+        Controller --> Attore : modifica ok()
+    else else
+        Controller --> Attore : cliente non trovato()
+    end
+    
+else rimuovi cliente
+    Attore -> Controller : rimuoviCliente()
+    
+    ref over Controller
+      RicercaCliente
+    end ref
+    
+    alt cliente trovato
+        Controller -> ClienteInst : <<destroy>>
+        destroy ClienteInst
+        Controller --> Attore : rimozione ok()
+    else else
+        Controller --> Attore : cliente non trovato()
+    end
+end
+
+deactivate Controller
+deactivate Attore
+@enduml

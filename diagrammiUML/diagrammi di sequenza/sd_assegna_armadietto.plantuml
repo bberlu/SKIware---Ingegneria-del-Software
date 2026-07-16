@@ -1,0 +1,34 @@
+@startuml
+title sd AssegnaArmadietto
+
+actor ":Amministratore" as Amm
+participant ":GestoreAttrezzatura" as GA
+participant ":Armadietto" as Arm
+
+activate Amm
+
+Amm -> GA : avviaAssegnazioneArmadietto()
+activate GA
+Amm -> GA : selezionaCliente(idCliente)
+
+note over GA
+  Richiede la verifica
+  del noleggio principale
+end note
+
+ref over GA : VerificaVincoloArmadietti
+
+alt vincolo soddisfatto
+    GA --> Amm : richiestaSelezioneArmadietto()
+    Amm -> GA : selezionaArmadietto(idArmadietto)
+    GA -> Arm : registraAssegnazione(idCliente)
+    activate Arm
+    deactivate Arm
+    GA --> Amm : registrazione ok()
+else else
+    GA --> Amm : errore: cliente senza attrezzatura principale()
+end
+
+deactivate GA
+deactivate Amm
+@enduml

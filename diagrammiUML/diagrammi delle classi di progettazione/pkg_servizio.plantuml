@@ -1,0 +1,111 @@
+@startuml
+skinparam classAttributeIconSize 0 
+
+package "class Servizio" {
+
+
+  abstract class Servizio {
+    + codice: String
+    + descrizione: String
+    + prezzo: Double
+    + stato: String
+    --
+    + aggiungiServizio(String, String, Double, String): void
+    + aggiornaStato(String): void
+    + getInfoServizio(): Map
+    + getPrezzo(): Double
+    + getStato(): String
+    + ricercaServizio(String): Servizio
+    + rimuoviServizio(): void
+    + verificaDisponibilita(DateTime, String): Boolean
+  }
+
+
+  abstract class AttrezzaturaPrincipale {
+    + livelloTecnico: String
+    --
+    + getLivelloTecnico(): String
+    + setLivelloTecnico(String): void
+  }
+
+
+  class Sci {
+    --
+    + aggiungiSci(String, String, Double, String): void
+    + getInfoSci(): Map
+    + rimuoviSci(): void
+  }
+
+  class Snowboard {
+    --
+    + aggiungiSnowboard(String, String, Double, String): void
+    + getInfoSnowboard(): Map
+    + rimuoviSnowboard(): void
+  }
+
+  class Scarpone {
+    --
+    + aggiungiScarpone(String, String, Double): void
+    + getInfoScarpone(): Map
+    + rimuoviScarpone(): void
+  }
+
+
+  class Casco {
+    --
+    + aggiungiCasco(String, String, Double): void
+    + getInfoCasco(): Map
+    + rimuoviCasco(): void
+  }
+
+  class Armadietto {
+    + dimensione: String
+    --
+    + aggiungiArmadietto(String, String, Double, String): void
+    + getInfoArmadietto(): Map
+    + rimuoviArmadietto(): void
+    + verificaVincoloNoleggioPrincipale(Cliente): Boolean
+  }
+
+  class "Attività::Assegnamento" as Assegnamento {
+    + cliente: Cliente
+    + codice: Integer
+    + dataOraFine: DateTime
+    + dataOraInizio: DateTime
+    + fasciaOraria: String
+    + valoreDIN: Double
+    --
+    + aggiungiAssegnamento(Integer, DateTime, DateTime, String, Servizio, Cliente): void
+    + getInfoAssegnamento(): Map
+    + rimuoviAssegnamento(): void
+    + verificaFine(): Boolean
+  }
+
+  class "Attività::Prenotazione" as Prenotazione {
+    + cliente: Cliente
+    + codice: Integer
+    + dataOraInizio: DateTime
+    + fasciaOraria: String
+    --
+    + aggiungiPrenotazione(Integer, DateTime, String, Servizio, Cliente): void
+    + disdiciPrenotazione(): void
+    + getInfoPrenotazione(): Map
+    + verificaFine(): Boolean
+  }
+
+
+  ' Gerarchia di ereditarietà
+  AttrezzaturaPrincipale --|> Servizio
+  Sci                    --|> AttrezzaturaPrincipale
+  Snowboard              --|> AttrezzaturaPrincipale
+  Scarpone               --|> Servizio
+  Casco                  --|> Servizio
+  Armadietto             --|> Servizio
+
+
+  Servizio "1" -- "0..*" Assegnamento
+  Servizio "1" -- "0..*" Prenotazione
+
+}
+
+@enduml

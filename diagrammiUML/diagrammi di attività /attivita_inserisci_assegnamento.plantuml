@@ -1,0 +1,59 @@
+@startuml
+
+
+
+group  <b>Inserisci Assegnamento</b> {
+
+
+
+start
+
+
+:Ricerca\nCliente;
+
+
+partition "«loop»" {
+
+
+  note left : [Body]
+  :Richiesta\nAssegnamento;
+
+
+  note left : [Setup]
+  if ([Si vuole assegnare un nuovo servizio]) then (Sì)
+
+    note left : [Test]
+    :«structured»\nAssegna Servizio;
+
+  else (No)
+  endif
+
+}
+
+:Crea\nAssegnamento;
+
+:Nuovo\nAssegnamento;
+
+:Memorizza\ndati;
+
+:Ricerca\nRicevuta;
+
+if ([non esiste una ricevuta relativa allo stesso\ncliente nello stesso giorno o il cliente\nnon è abbonato]) then (Sì)
+
+  :Addebita\ningresso;
+else ([else])
+
+endif
+
+:Crea\nRicevuta;
+
+:Nuova\nRicevuta;
+
+:Memorizza\ndati;
+
+:Stampa;
+
+stop
+
+}
+@enduml

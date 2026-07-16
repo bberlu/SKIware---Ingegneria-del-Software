@@ -1,0 +1,47 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+package GestioneCarnet {
+
+  class VistaGestisciCarnet {
+    + carnet: List
+    + list_view: ListView
+    --
+    + VistaGestisciCarnet(GestoreCarnet, GestoreUtenti)
+    + load_carnet(): void
+    + show_new(): void
+    + show_selected_info(): void
+    + update_ui(): void
+  }
+
+  class VistaCarnet {
+    + elimina_callback: Function
+    --
+    + VistaCarnet(Carnet, Function)
+    + elimina_carnet_click(Carnet): void
+    + get_cliente(Carnet): Map
+  }
+
+  class VistaInserisciCarnet {
+    + callback: Function
+    + combo: ComboBox
+    + v_layout: Layout
+    --
+    + VistaInserisciCarnet(Function, Function)
+    + add_info_text(String, String): void
+    + aggiungi_carnet(): void
+    + get_clienti(): Map
+    + onChanged(String): void
+  }
+
+  class "PyQt6::QWidget" as QWidget
+
+  VistaGestisciCarnet "1" -- "0..1" VistaCarnet
+  VistaGestisciCarnet "1" -- "0..1" VistaInserisciCarnet
+
+  VistaGestisciCarnet --|> QWidget
+  VistaCarnet --|> QWidget
+  VistaInserisciCarnet --|> QWidget
+}
+@enduml

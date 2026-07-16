@@ -1,0 +1,45 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+package GestioneAttrezzatura {
+
+  class VistaGestisciAttrezzatura {
+    + attrezzature: List
+    + list_view: ListView
+    --
+    + VistaGestisciAttrezzatura(GestoreAttrezzatura)
+    + load_attrezzatura(): void
+    + show_new(): void
+    + show_selected_info(): void
+    + update_ui(): void
+  }
+
+  class VistaAttrezzatura {
+    + elimina_callback: Function
+    --
+    + VistaAttrezzatura(Servizio, Function)
+    + elimina_attrezzatura_click(Servizio): void
+  }
+
+  class VistaInserisciAttrezzatura {
+    + callback: Function
+    + combo: ComboBox
+    + v_layout: Layout
+    --
+    + VistaInserisciAttrezzatura(Function)
+    + add_info_text(String, String): void
+    + aggiungi_attrezzatura(): void
+    + onChanged(String): void
+  }
+
+  class "PyQt6::QWidget" as QWidget
+
+  VistaGestisciAttrezzatura "1" -- "0..1" VistaAttrezzatura
+  VistaGestisciAttrezzatura "1" -- "0..1" VistaInserisciAttrezzatura
+
+  VistaGestisciAttrezzatura --|> QWidget
+  VistaAttrezzatura --|> QWidget
+  VistaInserisciAttrezzatura --|> QWidget
+}
+@enduml

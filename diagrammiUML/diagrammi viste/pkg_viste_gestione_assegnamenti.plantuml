@@ -1,0 +1,53 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+package GestioneAssegnamenti {
+
+  class VistaGestisciAssegnamenti {
+    + assegnamenti: List
+    + list_view: ListView
+    --
+    + VistaGestisciAssegnamenti(GestoreNoleggi, GestoreUtenti, GestoreAttrezzatura)
+    + load_assegnamenti(): void
+    + show_new(): void
+    + show_selected_info(): void
+    + update_ui(): void
+  }
+
+  class VistaAssegnamento {
+    + consegna_callback: Function
+    + ritiro_callback: Function
+    + din_callback: Function
+    --
+    + VistaAssegnamento(Assegnamento, Function, Function, Function, Function)
+    + consegna_click(Assegnamento): void
+    + ritiro_click(Assegnamento): void
+    + inserisci_din_click(Assegnamento): void
+    + get_ricevuta(Assegnamento): Map
+  }
+
+  class VistaInserisciAssegnamento {
+    + callback: Function
+    + combo: ComboBox
+    + combo_attrezzatura: ComboBox
+    + v_layout: Layout
+    --
+    + VistaInserisciAssegnamento(Function, Function, Function)
+    + add_info_text(String, String): void
+    + aggiungi_assegnamento(): void
+    + get_clienti(): Map
+    + get_attrezzature(): Map
+    + onChanged(String): void
+  }
+
+  class "PyQt6::QWidget" as QWidget
+
+  VistaGestisciAssegnamenti "1" -- "0..1" VistaAssegnamento
+  VistaGestisciAssegnamenti "1" -- "0..1" VistaInserisciAssegnamento
+
+  VistaGestisciAssegnamenti --|> QWidget
+  VistaAssegnamento --|> QWidget
+  VistaInserisciAssegnamento --|> QWidget
+}
+@enduml

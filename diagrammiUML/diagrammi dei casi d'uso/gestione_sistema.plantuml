@@ -1,0 +1,21 @@
+@startuml Gestione_Sistema
+
+
+
+
+rectangle "Gestione sistema" {
+
+
+actor "Amministratore" as Admin
+rectangle "  «actor»\n  Tempo  " as Tempo
+
+  usecase "Vincolo apertura\nstagionale" as UC_VAS
+  usecase "Backup" as UC_BCK
+}
+
+Admin  -->  UC_VAS
+Admin  -->  UC_BCK
+Tempo  -->  UC_VAS
+Tempo  -->  UC_BCK
+
+@enduml

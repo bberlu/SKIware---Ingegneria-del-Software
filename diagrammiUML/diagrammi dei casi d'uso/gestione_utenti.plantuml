@@ -1,0 +1,45 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+
+rectangle "Gestione Utenti" {
+actor "Amministratore" as Amministratore
+actor "Ski-man" as Skiman
+
+
+    usecase "CUD Utente" as CUDU
+    usecase "Visualizza Utente" as VU
+    usecase "Ricerca Utente" as RU
+
+
+    usecase "CUD Cliente" as CUDC
+    usecase "CUD Ski-man" as CUDS
+    usecase "CUD Amministratore" as CUDA
+
+
+    usecase "Gestione Account e Accessi" as AUTH
+    usecase "Verifica Accesso\nAree Riservate" as VAAR
+}
+
+
+
+CUDU <|-- CUDC
+CUDU <|-- CUDS
+CUDU <|-- CUDA
+
+
+CUDU ..> RU : <<include>>
+VU   ..> RU : <<include>>
+
+' l'accesso al sistema comporta la verifica dei permessi in base al ruolo
+AUTH ..> VAAR : <<include>>
+
+
+Amministratore -- CUDU
+Amministratore -- VU
+Amministratore -- RU
+Amministratore -- AUTH
+Skiman -- AUTH
+
+@enduml

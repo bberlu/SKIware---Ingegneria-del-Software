@@ -1,0 +1,16 @@
+@startuml
+
+hide empty members
+
+package "pkg Servizio" {
+
+
+    abstract class Servizio {
+        - codice: String
+        - descrizione: String
+        - prezzo: Double
+        - stato: String
+    }
+
+}
+@enduml

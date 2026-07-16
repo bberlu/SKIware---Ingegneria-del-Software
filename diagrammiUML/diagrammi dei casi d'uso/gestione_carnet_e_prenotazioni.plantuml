@@ -1,0 +1,30 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+
+rectangle "Gestione Carnet e Prenotazioni" {
+
+
+actor "Amministratore" as Admin
+rectangle "Tempo"      as Tempo <<actor>>
+
+    usecase "Vendita e Gestione Carnet"        as UC_Vendita
+    usecase "Inserisci Prenotazione"           as UC_Prenotazione
+    usecase "Disdetta Prenotazione e Rimborsi" as UC_Disdetta
+    usecase "Vincolo Temporale 24h"            as UC_Vincolo24h
+    usecase "Verifica Finestra 48h"            as UC_Vincolo48h
+    usecase "Decurtazione Credito"             as UC_Decurtazione
+}
+
+Admin   --> UC_Vendita
+Admin   --> UC_Prenotazione
+Admin   --> UC_Disdetta
+Tempo   --> UC_Vincolo24h
+Tempo   --> UC_Vincolo48h
+
+UC_Prenotazione ..> UC_Vincolo24h   : <<include>>
+UC_Prenotazione ..> UC_Decurtazione : <<include>>
+UC_Disdetta     ..> UC_Vincolo48h   : <<include>>
+UC_Disdetta     ..> UC_Decurtazione : <<include>>
+@enduml

@@ -1,0 +1,76 @@
+@startuml
+title sd Backup
+
+
+note left of Tempo
+  Il backup è
+  effettuato
+  ogni giorno
+  alle ore
+  23.30.
+end note
+
+actor Tempo
+participant GestoreBackup
+participant Utilizzatore
+participant Servizio
+participant Carnet
+participant Prenotazione
+participant Assegnamento
+participant Ricevuta
+
+activate Tempo
+Tempo -> GestoreBackup : effettuaBackup()
+activate GestoreBackup
+
+GestoreBackup -> Utilizzatore : getInfoUtilizzatore()
+activate Utilizzatore
+deactivate Utilizzatore
+
+GestoreBackup -> GestoreBackup : copiaDatiUtilizzatore()
+activate GestoreBackup
+deactivate GestoreBackup
+
+GestoreBackup -> Servizio : getInfoServizio()
+activate Servizio
+deactivate Servizio
+
+GestoreBackup -> GestoreBackup : copiaDatiServizio()
+activate GestoreBackup
+deactivate GestoreBackup
+
+GestoreBackup -> Carnet : getInfoCarnet()
+activate Carnet
+deactivate Carnet
+
+GestoreBackup -> GestoreBackup : copiaDatiCarnet()
+activate GestoreBackup
+deactivate GestoreBackup
+
+GestoreBackup -> Prenotazione : getInfoPrenotazione()
+activate Prenotazione
+deactivate Prenotazione
+
+GestoreBackup -> GestoreBackup : copiaDatiPrenotazione()
+activate GestoreBackup
+deactivate GestoreBackup
+
+GestoreBackup -> Assegnamento : getInfoAssegnamento()
+activate Assegnamento
+deactivate Assegnamento
+
+GestoreBackup -> GestoreBackup : copiaDatiAssegnamento()
+activate GestoreBackup
+deactivate GestoreBackup
+
+GestoreBackup -> Ricevuta : getInfoRicevuta()
+activate Ricevuta
+deactivate Ricevuta
+
+GestoreBackup -> GestoreBackup : copiaDatiRicevuta()
+activate GestoreBackup
+deactivate GestoreBackup
+
+deactivate GestoreBackup
+deactivate Tempo
+@enduml

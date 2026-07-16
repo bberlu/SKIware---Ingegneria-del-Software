@@ -1,0 +1,61 @@
+@startuml
+
+title sd InserisciPrenotazione
+
+actor Amministratore
+
+participant "Gestione\nPrenotazione" as Prenotazione
+participant Carnet
+
+Amministratore -> Prenotazione : inserisciPrenotazione()
+
+ref over Amministratore, Prenotazione : RicercaCliente
+
+alt cliente trovato
+    Prenotazione -> Carnet : verificaCarnetAttivo()
+    Carnet --> Prenotazione : esito verifica
+    
+    alt carnet valido e saldo sufficiente
+        
+        ref over Amministratore, Prenotazione : RicercaAttrezzatura
+        Amministratore -> Prenotazione : selezionaAttrezzatura(attrezzatura)
+        Amministratore -> Prenotazione : selezionaFasciaOraria(fascia)
+        Amministratore -> Prenotazione : selezionaDataInizio(data)
+        
+        ref over Prenotazione : VerificaFasciaOraria
+        
+        alt attrezzatura disponibile
+            ref over Prenotazione : VincoloAperturaStagionale
+            
+            alt vincolo stagionale rispettato
+                ref over Prenotazione : VincoloTemporalePrenotazione
+                
+                alt vincolo temporale rispettato
+                    Prenotazione -> Prenotazione : generaCodiceUnivoco()
+                    
+                    ref over Prenotazione, Carnet : DecurtazioneCredito
+                    
+                    Prenotazione -> Prenotazione : memorizzaPrenotazione()
+                    Prenotazione --> Amministratore : prenotazione completata con successo
+                    
+                else vincolo temporale non rispettato
+                    Prenotazione --> Amministratore : errore: mancato rispetto vincolo temporale (24h)
+                end
+                
+            else vincolo stagionale non rispettato
+                Prenotazione --> Amministratore : errore: data fuori stagione
+            end
+            
+        else attrezzatura non disponibile
+            Prenotazione --> Amministratore : errore: attrezzatura non disponibile nella data/fascia
+        end
+        
+    else carnet non valido o saldo insufficiente
+        Prenotazione --> Amministratore : errore: assenza di Carnet attivo o saldo insufficiente
+    end
+    
+else cliente non trovato
+    Prenotazione --> Amministratore : errore: cliente non trovato
+end
+
+@enduml

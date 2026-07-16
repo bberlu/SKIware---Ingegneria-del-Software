@@ -1,0 +1,44 @@
+@startuml
+
+
+title sd GestioneValoreDINeResponsabilità
+
+actor "Ski-man" as SkiMan
+participant "Assegnamento" as Assegnamento
+participant "Cliente" as Cliente
+
+
+
+SkiMan -> Assegnamento: richiamaAssegnamento(codiceAssegnamento)
+activate Assegnamento
+
+
+Assegnamento -> Cliente: getParametriFisici()
+activate Cliente
+Cliente --> Assegnamento: altezza, peso, misuraScarponi, livelloAbilita
+deactivate Cliente
+
+
+Assegnamento -> Assegnamento: calcolaRangeDINConsigliato()
+
+Assegnamento --> SkiMan: mostraDatiAssegnamento e rangeDINConsigliato
+deactivate Assegnamento
+
+
+' Lo ski-man inserisce il valore effettivo e il suo ID per la tracciabilità
+SkiMan -> Assegnamento: inserisciValoreDIN(valoreDINEffettivo, idSkiMan)
+activate Assegnamento
+
+' Associazione irrevocabile 
+Assegnamento -> Assegnamento: associaResponsabilita(idSkiMan)
+note right of Assegnamento
+  Associazione irrevocabile 
+  dello ski-man all'operazione 
+  per sicurezza e responsabilità
+end note
+
+Assegnamento -> Assegnamento: salvaDati()
+Assegnamento --> SkiMan: registrazioneCompletata()
+deactivate Assegnamento
+
+@enduml

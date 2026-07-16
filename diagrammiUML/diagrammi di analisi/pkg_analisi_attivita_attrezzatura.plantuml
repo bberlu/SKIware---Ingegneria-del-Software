@@ -1,0 +1,113 @@
+@startuml
+left to right direction
+hide empty members
+
+
+
+
+package "pkg Attrezzatura" {
+
+  abstract class Attrezzatura {
+    - codice : Str
+    - descrizione : Str
+    - prezzo : Double
+    - stato : Str
+  }
+
+  abstract class AttrezzaturaPrincipale {
+    - livelloTecnico : Str
+  }
+
+  class Sci {}
+  class Snowboard {}
+  class Scarpone {}
+  class Casco {}
+
+  class Armadietto {
+    - dimensione : Str
+  }
+
+  Attrezzatura           <|-- AttrezzaturaPrincipale
+  Attrezzatura           <|-- Scarpone
+  Attrezzatura           <|-- Casco
+  Attrezzatura           <|-- Armadietto
+  AttrezzaturaPrincipale <|-- Sci
+  AttrezzaturaPrincipale <|-- Snowboard
+
+}
+
+
+
+package "pkg Attività" {
+
+  abstract class Utilizzatore {
+    - codice : Int
+    - codiceFiscale : Str
+    - cognome : Str
+    - nome : Str
+    - email : Str
+    - password : Str
+    - telefono : Int
+  }
+
+  class Cliente {
+    - eta : Int
+    - altezza : Double
+    - peso : Double
+    - misuraScarponi : Int
+    - livelloAbilita : Str
+  }
+
+  class SkiMan {
+    - dataNascita : DateTime
+    - luogoNascita : Str
+    - qualificaTecnica : Str
+  }
+
+  class Amministratore {}
+
+  class Assegnamento {
+    - codice : Int
+    - dataOraInizio : DateTime
+    - dataOraFine : DateTime
+    - fasciaOraria : Str
+    - valoreDIN : Double
+  }
+
+  class Prenotazione {
+    - codice : Int
+    - dataOraInizio : DateTime
+    - fasciaOraria : Str
+  }
+
+  class Ricevuta {
+    - anno : Inte
+    - codice : Int
+    - dataOraEmissione : DateTime
+    - importoTotale : Double
+  }
+
+  class Carnet {
+    - codice : Int
+    - dataRilascio : DateTime
+    - saldoResiduo : Int
+    - stagionale : bool
+  }
+
+  Utilizzatore <|-- Cliente
+  Utilizzatore <|-- SkiMan
+  Utilizzatore <|-- Amministratore
+
+  Cliente      "1" -- "0..*" Assegnamento
+  Cliente      "1" -- "0..*" Prenotazione
+  Cliente      "1" -- "0..*" Carnet
+  Assegnamento "1" -- "1"    Ricevuta
+
+}
+
+' ogni assegnamento/prenotazione riguarda esattamente un'attrezzatura;
+' un'attrezzatura può comparire in più assegnamenti/prenotazioni nel tempo
+Attrezzatura "1" <-- "0..*" Assegnamento
+Attrezzatura "1" <-- "0..*" Prenotazione
+
+@enduml

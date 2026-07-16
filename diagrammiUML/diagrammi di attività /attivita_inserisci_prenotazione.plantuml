@@ -1,0 +1,46 @@
+@startuml
+
+
+group <b>act Inserisci Prenotazione</b>
+
+start
+
+:Ricerca\nCliente\n        ⋔;
+
+partition "«loop»" {
+
+
+  note left : [Body]
+  :Richiesta\nPrenotazione;
+
+
+  note left : [Setup]
+  if ([Si vuole prenotare un nuovo servizio]) then (Sì)
+
+    
+    note left : [Test]
+    :«structured»\nPrenota Servizio;
+
+  else (No)
+  endif
+
+}
+
+:Crea\nPrenotazione;
+
+:Nuova\nPrenotazione;
+
+:Memorizza\ndati;
+
+:Crea\nRicevuta;
+
+:Nuova\nRicevuta;
+
+:Memorizza\ndati;
+
+
+:Stampa;
+
+stop
+
+@enduml

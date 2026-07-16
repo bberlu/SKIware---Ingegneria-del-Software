@@ -1,0 +1,31 @@
+@startuml
+ 
+group <b>act Disdetta Prenotazione e Rimborsi</b>
+start
+
+:Specifica Codice\nPrenotazione;
+:Ricerca\nPrenotazione;
+
+if (Prenotazione\ntrovata?) then (Sì)
+else (No)
+  :Visualizza\nMessaggio Errore;
+endif
+
+:«structured»\nVerifica Finestra\nTemporale 48h;
+
+if (Disdetta ≥ 48h prima\ndell'inizio del servizio?) then (Sì)
+  partition "[Rimborso]" {
+    :«structured»\nDecurtazione Credito\n(riaccredito);
+    :Annulla\nPrenotazione;
+    :Notifica:\nDisdetta con rimborso;
+  }
+else (No)
+  partition "[Nessun Rimborso]" {
+    :Annulla\nPrenotazione;
+    :Notifica:\nDisdetta senza rimborso\n(credito perso);
+  }
+endif
+
+stop
+
+@enduml

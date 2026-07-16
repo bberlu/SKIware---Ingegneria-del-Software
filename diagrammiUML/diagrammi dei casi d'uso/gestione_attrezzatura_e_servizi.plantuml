@@ -1,0 +1,31 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+
+rectangle "Gestione Attrezzatura e Servizi" {
+
+    actor "Ski-man" as a1
+actor "Amministratore" as a2
+
+  usecase "Gestione Stato Attrezzatura" as UC1
+  usecase "Assegna Armadietto" as UC2
+  usecase "Verifica Vincolo Armadietti" as UC3
+  usecase "Ricerca Noleggio Principale" as UC4
+  usecase "CUD Attrezzatura" as UC6
+  usecase "Ricerca Attrezzatura" as UC7
+}
+
+
+
+a1 --> UC1
+a1 --> UC2
+
+a2 --> UC1
+a2 --> UC2
+a2 --> UC6
+
+UC2 .> UC3 : <<include>>
+UC3 .> UC4 : <<include>>
+UC6 .> UC7 : <<include>>
+@enduml

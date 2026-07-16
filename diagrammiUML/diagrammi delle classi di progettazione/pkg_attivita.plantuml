@@ -1,0 +1,129 @@
+@startuml
+left to right direction
+package "class Attività"{
+
+skinparam classAttributeIconSize 0
+skinparam CircledCharFontSize 12
+
+abstract class Utilizzatore {
+  - codice: Int
+  - codiceFiscale: Str
+  - cognome: Str
+  - email: Str
+  - nome: Str
+  - password: Str
+  - telefono: Int
+  --
+  + aggiungiUtilizzatore(Integer, String, String, String, String, String, Integer): void
+  + getInfoUtilizzatore(): map
+  + ricercaUtilizzatoreCF(String): Utilizzatore
+  + ricercaUtilizzatoreCodice(Integer): Utilizzatore
+  + ricercaUtilizzatoreNomeCognome(String, String): Utilizzatore
+  + rimuoviUtilizzatore(): void
+  + puoAccedere(): Bool
+  + validaPassword(String): void
+}
+
+class SkiMan {
+  - dataNascita: DateTime
+  - luogoNascita: Str
+  - qualificaTecnica: Str
+  --
+  + aggiungiSkiMan(Integer, String, String, String, String, String, Integer, DateTime, String, String): void
+  + getInfoSkiMan(): map
+  + ricercaUtilizzatoreCF(String): Utilizzatore
+  + ricercaUtilizzatoreCodice(Integer): Utilizzatore
+  + ricercaUtilizzatoreNomeCognome(String, String): Utilizzatore
+  + rimuoviSkiMan(): void
+}
+
+class Amministratore {
+  --
+  + aggiungiAmministratore(Integer, String, String, String, String, String, Integer): void
+  + getInfoAmministratore(): map
+  + rimuoviAmministratore(): void
+}
+
+class Cliente {
+  - altezza: Double
+  - eta: Int
+  - livelloAbilita: Str
+  - misuraScarponi: Int
+  - peso: Double
+  --
+  + aggiungiCliente(Integer, String, String, String, String, String, Integer, Double, Integer, String, Integer, Double): void
+  + getInfoCliente(): map
+  + ricercaUtilizzatoreCF(String): Utilizzatore
+  + ricercaUtilizzatoreCodice(Integer): Utilizzatore
+  + ricercaUtilizzatoreNomeCognome(String, String): Utilizzatore
+  + rimuoviCliente(): void
+  + puoAccedere(): Bool
+}
+
+class Prenotazione {
+  - cliente: Cliente
+  - codice: Int
+  - dataOraInizio: DateTime
+  - fasciaOraria: Str
+  - servizio: Servizio
+  --
+  + aggiungiPrenotazione(Integer, DateTime, String, Servizio, Cliente): void
+  + disdiciPrenotazione(): void
+  + getInfoPrenotazione(): map
+  + rimuoviPrenotazione(): void
+  + verificaFine(): Bool
+}
+
+class Carnet {
+  - codice: Int
+  - dataRilascio: DateTime
+  - saldoResiduo: Int
+  - stagionale: Bool
+  --
+  + aggiungiCarnet(Integer, DateTime, Integer, Boolean): void
+  + aggiornaCredito(Integer): void
+  + getInfoCarnet(): map
+  + ricercaCarnet(Integer): Carnet
+  + rimuoviCarnet(): void
+  + verificaSaldoSufficiente(): bool
+}
+
+class Assegnamento {
+  - cliente: Cliente
+  - codice: Int
+  - dataOraFine: DateTime
+  - dataOraInizio: DateTime
+  - fasciaOraria: Str
+  - servizio: Servizio
+  - skiman: SkiMan
+  - valoreDIN: Double
+  --
+  + aggiungiAssegnamento(Integer, DateTime, DateTime, String, Servizio, Cliente): void
+  + getInfoAssegnamento(): map
+  + registraDIN(Double, SkiMan): void
+  + rimuoviAssegnamento(): void
+  + verificaFine(): Bool
+}
+
+class Ricevuta {
+  - anno: Int
+  - assegnamento: Assegnamento
+  - codice: Int
+  - dataOraEmissione: DateTime
+  - importoTotale: Double
+  --
+  + aggiungiRicevuta(DateTime, Integer, Double, Assegnamento): void
+  + getInfoRicevuta(): map
+  + rimuoviRicevuta(): void
+}
+
+Utilizzatore <|-- SkiMan
+Utilizzatore <|-- Amministratore
+Utilizzatore <|-- Cliente
+
+Cliente "1" -- "0..*" Prenotazione
+Cliente "1" -- "0..*" Carnet
+Cliente "1" -- "0..*" Assegnamento
+Assegnamento "1" -- "1" Ricevuta
+}
+@enduml

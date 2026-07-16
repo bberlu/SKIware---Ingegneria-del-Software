@@ -1,0 +1,49 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+package GestionePrenotazioni {
+
+  class VistaGestisciPrenotazioni {
+    + prenotazioni: List
+    + list_view: ListView
+    --
+    + VistaGestisciPrenotazioni(GestoreCarnet, GestoreUtenti, GestoreAttrezzatura)
+    + load_prenotazioni(): void
+    + show_new(): void
+    + show_selected_info(): void
+    + update_ui(): void
+  }
+
+  class VistaPrenotazione {
+    + disdici_callback: Function
+    + elimina_callback: Function
+    --
+    + VistaPrenotazione(Prenotazione, Function, Function)
+    + disdici_prenotazione_click(Prenotazione): void
+    + elimina_prenotazione_click(Prenotazione): void
+  }
+
+  class VistaInserisciPrenotazione {
+    + callback: Function
+    + combo: ComboBox
+    + v_layout: Layout
+    --
+    + VistaInserisciPrenotazione(Function, Function)
+    + add_info_text(String, String): void
+    + aggiungi_prenotazione(): void
+    + get_clienti(): Map
+    + onChanged(String): void
+  }
+
+
+  class "PyQt6::QWidget" as QWidget
+
+  VistaGestisciPrenotazioni "1" -- "0..1" VistaPrenotazione
+  VistaGestisciPrenotazioni "1" -- "0..1" VistaInserisciPrenotazione
+
+  VistaGestisciPrenotazioni --|> QWidget
+  VistaPrenotazione --|> QWidget
+  VistaInserisciPrenotazione --|> QWidget
+}
+@enduml

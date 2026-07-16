@@ -1,0 +1,44 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+package GestioneUtenti {
+
+  class VistaGestisciUtenti {
+    + utenti: List
+    + list_view: ListView
+    --
+    + VistaGestisciUtenti(GestoreUtenti)
+    + load_utenti(): void
+    + show_new(): void
+    + show_selected_info(): void
+    + update_ui(): void
+  }
+
+  class VistaUtente {
+    + elimina_callback: Function
+    --
+    + VistaUtente(Utilizzatore, Function)
+    + elimina_utente_click(Utilizzatore): void
+  }
+
+  class VistaInserisciUtente {
+    + callback: Function
+    + combo: ComboBox
+    + v_layout: Layout
+    --
+    + VistaInserisciUtente(Function)
+    + add_info_text(String, String): void
+    + aggiungi_utente(): void
+    + onChanged(String): void
+  }
+
+  class "PyQt6::QWidget" as QWidget
+
+  VistaGestisciUtenti "1" -- "0..1" VistaUtente
+  VistaGestisciUtenti "1" -- "0..1" VistaInserisciUtente
+
+  VistaGestisciUtenti --|> QWidget
+  VistaUtente --|> QWidget
+  VistaInserisciUtente --|> QWidget
+}
+@enduml

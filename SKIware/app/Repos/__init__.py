@@ -1,0 +1,6 @@
+from .utilizzatore_repository import UtilizzatoreRepository
+from .servizio_repository import ServizioRepository
+from .carnet_repository import CarnetRepository
+from .prenotazione_repository import PrenotazioneRepository
+from .assegnamento_repository import AssegnamentoRepository
+from .ricevuta_repository import RicevutaRepository

@@ -1,0 +1,50 @@
+@startuml
+group <b>act Consegna e Ritiro</b>
+start
+
+:Specifica Codice\nAssegnamento;
+:Ricerca\nAssegnamento;
+
+if (Assegnamento\ntrovato?) then (Sì)
+else (No)
+  :Visualizza\nMessaggio Errore;
+  stop
+endif
+
+:Visualizza Dati Assegnamento\n(cliente, attrezzatura,\nfascia oraria, stato attuale);
+
+switch (Operazione\nselezionata?)
+case (Consegna)
+  partition "[Consegna]" {
+    if (Stato attrezzatura\n**"Disponibile"**?) then (Sì)
+    else (No)
+      :Visualizza\nMessaggio Errore;
+      stop
+    endif
+
+    :Conferma Consegna\nfisica al cliente;
+    :Aggiorna Stato\nattrezzatura → "Assegnato";
+
+    if (Attrezzatura\ndi tipo Sci?) then (Sì)
+      :«structured»\nGestione Valore DIN\ne Responsabilità;
+    else (No)
+    endif
+  }
+
+case (Ritiro)
+  partition "[Ritiro]" {
+    if (Stato attrezzatura\n**"Assegnato"**?) then (Sì)
+    else (No)
+      :Visualizza\nMessaggio Errore;
+      stop
+    endif
+
+    :Conferma Ritiro\nfisico dal cliente;
+    :Aggiorna Stato\nattrezzatura → "Disponibile";
+  }
+
+endswitch
+
+stop
+
+@enduml

@@ -1,0 +1,51 @@
+@startuml
+
+group <b>CUD Cliente</b>
+start
+
+
+switch (Switch)
+
+case ([inserisci])
+
+  :Ricerca\nCliente\n         ⋔;
+
+  if (cliente trovato?) then ([cliente trovato])
+    ' Cliente non ancora presente: si procede con l'inserimento
+    :Inserisci\ndati;
+    :Memorizza\ndati;
+    :Nuovo\nCliente;
+  else ([else])
+    ' Cliente già presente: il sistema segnala l'errore
+  endif
+
+
+case ([aggiorna])
+
+  :Ricerca\nCliente\n         ⋔;
+
+  if (cliente trovato?) then ([cliente trovato])
+
+    :Modifica\ndati;
+    :Memorizza\ndati;
+  else ([else])
+
+  endif
+
+case ([rimuovi])
+
+  :Ricerca\nCliente\n         ⋔;
+
+  if (cliente trovato?) then ([cliente trovato])
+
+    :Rimuovi\nCliente;
+  else ([else])
+
+  endif
+
+endswitch
+
+
+stop
+
+@enduml

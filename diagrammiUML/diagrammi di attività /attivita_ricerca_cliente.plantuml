@@ -1,0 +1,128 @@
+@startuml
+
+group   <b>Ricerca Cliente</b>
+
+start
+switch (Switch)
+
+case ([codice])
+
+  partition "«loop» Ricerca per codice" {
+
+    note left : [Test]
+    
+    fork
+      :Inserisci\ncodice;
+    fork again
+      :i=0;
+    end fork
+
+    note left : [Setup]
+
+    while ([codice!=getCodice() &&\ni<numClienti]) is (vero)
+
+      note left : [Body]
+
+      fork
+        :Get codice cliente\nsuccessivo;
+      fork again
+        :i++;
+      end fork
+
+    endwhile (falso)
+  }
+
+
+  if (i>=numClienti?) then ([i>=numClienti])
+    ' Cliente NON trovato
+    :Visualizza\nerrore;
+    if (operazione?) then ([inserisci])
+      :Inserisci\ndati;
+      :Memorizza\ndati;
+      :Nuovo\nCliente;
+    else 
+    endif
+  else 
+    ' Cliente trovato
+    :Preleva\ndati;
+  endif
+
+case ([nome e cognome])
+
+  partition "«loop» Ricerca per nome e cognome" {
+
+    note left : [Test]
+    fork
+      :Inserisci nome\ne cognome;
+    fork again
+      :i=0;
+    end fork
+
+    note left : [Setup]
+    while ([i<numClienti]) is (vero)
+
+      note left : [Body]
+      fork
+        :Get nome e cognome\ncliente successivo;
+      fork again
+        :i++;
+      end fork
+
+    endwhile (falso)
+  }
+
+  ' Esito della ricerca per nome e cognome
+  if (i>=numClienti?) then ([i>=numClienti])
+    :Visualizza\nerrore;
+    if (operazione?) then ([inserisci])
+      :Inserisci\ndati;
+      :Memorizza\ndati;
+      :Nuovo\nCliente;
+    else 
+    endif
+  else 
+    :Preleva\ndati;
+  endif
+
+case ([codice fiscale])
+
+  partition "«loop» Ricerca per codice fiscale" {
+
+    note left : [Test]
+    fork
+      :Inserisci codice\nfiscale;
+    fork again
+      :i=0;
+    end fork
+
+    note left : [Setup]
+    while ([i<numClienti]) is (vero)
+
+      note left : [Body]
+      fork
+        :Get codice\nfiscale;
+      fork again
+        :i++;
+      end fork
+
+    endwhile (falso)
+  }
+
+  ' Esito della ricerca per codice fiscale
+  if (i>=numClienti?) then ([i>=numClienti])
+    :Visualizza\nerrore;
+    if (operazione?) then ([inserisci])
+      :Inserisci\ndati;
+      :Memorizza\ndati;
+      :Nuovo\nCliente;
+    else 
+    endif
+  else 
+    :Preleva\ndati;
+  endif
+
+endswitch
+
+stop
+
+@enduml

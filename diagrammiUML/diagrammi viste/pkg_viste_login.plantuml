@@ -1,0 +1,36 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+package Accesso {
+
+' finestra di login
+  class VistaLogin {
+    + callback: Function
+    --
+    + VistaLogin(Function)
+    + accedi_click(): void
+  }
+
+ 
+  class FinestraPrincipale {
+    + FinestraPrincipale(GestoreSistema, Utilizzatore)
+    + apri_utenti(): void
+    + apri_attrezzatura(): void
+    + apri_carnet(): void
+    + apri_prenotazioni(): void
+    + apri_assegnamenti(): void
+    + effettua_backup(): void
+    + onTimerScattato(): void
+  }
+
+ 
+  class "PyQt6::QWidget" as QWidget
+
+  VistaLogin --|> QWidget
+  FinestraPrincipale --|> QWidget
+
+  ' la finestra principale si apre solo dopo l'autenticazione
+  VistaLogin ..> FinestraPrincipale : apre
+}
+@enduml

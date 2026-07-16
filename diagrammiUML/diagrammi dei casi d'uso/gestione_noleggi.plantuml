@@ -1,0 +1,47 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor WhiteSmoke
+  BorderColor Black
+  ArrowColor Black
+}
+
+rectangle "Gestione Noleggi" {
+
+actor Amministratore as Admin
+actor "Ski-man" as Skiman
+
+
+
+
+  usecase "Inserisci Assegnamento" as UC10
+  usecase "Emissione Ricevuta" as UC11
+  usecase "Consegna e Ritiro" as UC12
+  usecase "Gestione Valore DIN\ne Responsabilità" as UC13
+
+
+  usecase "Ricerca Cliente" as RicCliente
+  usecase "Ricerca Attrezzatura" as RicAttr
+  usecase "Verifica Fascia Oraria" as VFO
+  usecase "Ricerca Noleggio\nPrincipale" as RicNol
+}
+
+
+Admin --> UC10
+
+
+
+Skiman --> UC12
+Skiman --> UC13
+
+
+
+
+UC10  ..> UC11        : «include»
+UC10  ..> RicCliente  : «include»
+UC10  ..> RicAttr     : «include»
+UC10  ..> VFO         : «include»
+UC12  ..> RicNol      : «include»
+
+@enduml

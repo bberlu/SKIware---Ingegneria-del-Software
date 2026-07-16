@@ -1,0 +1,107 @@
+@startuml
+left to right direction
+package "class Gestione"{
+
+skinparam classAttributeIconSize 0
+
+class GestoreUtenti {
+  + aggiungiCliente(Integer, String, String, String, String, String, Integer, Double, Integer, String, Integer, Double): String
+  + aggiungiSkiMan(Integer, String, String, String, String, String, Integer, DateTime, String, String): String
+  + aggiungiAmministratore(Integer, String, String, String, String, String, Integer): String
+  + autentica(Integer, String): Utilizzatore
+  + modificaCliente(Integer, Map): String
+  + rimuoviCliente(Integer): String
+  + rimuoviSkiMan(Integer): String
+  + rimuoviAmministratore(Integer): String
+  + ricercaUtilizzatoreCodice(Integer): Utilizzatore
+  + ricercaUtilizzatoreCF(String): Utilizzatore
+  + ricercaUtilizzatoreNomeCognome(String, String): Utilizzatore
+  + elencaUtilizzatori(): List
+  + elencaClienti(): List
+}
+
+class GestoreAttrezzatura {
+  + aggiungiSci(String, String, Double, String): String
+  + aggiungiSnowboard(String, String, Double, String): String
+  + aggiungiScarpone(String, String, Double): String
+  + aggiungiCasco(String, String, Double): String
+  + aggiungiArmadietto(String, String, Double, String): String
+  + rimuoviServizio(String): String
+  + verificaVincoloNoleggioPrincipale(Cliente): Boolean
+  + ricercaServizio(String): Servizio
+  + elencaServizi(): List
+  + elencaDisponibili(): List
+}
+
+class GestoreCarnet {
+  + carnet: List
+  + prenotazioni: List
+
+  + vendiCarnet(cliente: Cliente, tipo: Integer, stagionale: Boolean): Carnet
+  + verificaCarnetAttivo(cliente: Cliente): Boolean
+  + decurtaCredito(carnet: Carnet, valore: Integer): void
+  + inserisciPrenotazione(cliente: Cliente, servizio: Servizio, data: DateTime, fascia: String): Prenotazione
+  + ricercaPrenotazione(codice: Integer): Prenotazione
+  + disdiciPrenotazione(codice: Integer): String
+  + eliminaPrenotazione(codice: Integer): String
+  + rimuoviCarnet(codice: Integer): String
+  + vincoloTemporalePrenotazione(data: DateTime): Boolean
+  + verificaFinestra48h(prenotazione: Prenotazione): Boolean
+  + verificaDisponibilita(servizio: Servizio, data: DateTime, fascia: String): Boolean
+  + elencaCarnet(): List
+  + elencaPrenotazioni(): List
+}
+
+class GestoreNoleggi {
+  + aperturaStagione: Pair
+  + chiusuraStagione: Pair
+  + fasceOrarie: List
+
+  + vincoloAperturaStagionale(data: DateTime): Boolean
+  + verificaFasciaOraria(fascia: String): Boolean
+  + inserisciAssegnamento(Integer, String, DateTime, DateTime, String): String
+  + rimuoviAssegnamento(codice: Integer): String
+  + consegnaAttrezzatura(codice: Integer): String
+  + ritiraAttrezzatura(codice: Integer): String
+  + calcolaRangeDINConsigliato(cliente: Cliente): Pair
+  + inserisciValoreDIN(codice: Integer, valoreDIN: Double, skiman: Integer): String
+  + elencaAssegnamenti(): List
+  + elencaRicevute(): List
+}
+
+class GestoreBackup {
+  + backup: Map
+
+  + effettuaBackup(): String
+  + copiaDatiUtilizzatori(): void
+  + copiaDatiServizi(): void
+  + copiaDatiCarnet(): void
+  + copiaDatiPrenotazioni(): void
+  + copiaDatiAssegnamenti(): void
+  + copiaDatiRicevute(): void
+}
+
+class GestoreSistema {
+  + GestoreSistema(cartellaDati: String)
+  + getGestoreUtenti(): GestoreUtenti
+  + getGestoreAttrezzatura(): GestoreAttrezzatura
+  + getGestoreCarnet(): GestoreCarnet
+  + getGestoreNoleggi(): GestoreNoleggi
+  + getGestoreBackup(): GestoreBackup
+}
+
+' GestoreSistema crea e coordina tutti gli altri gestori
+GestoreSistema ..> GestoreUtenti : crea
+GestoreSistema ..> GestoreAttrezzatura : crea
+GestoreSistema ..> GestoreCarnet : crea
+GestoreSistema ..> GestoreNoleggi : crea
+GestoreSistema ..> GestoreBackup : crea
+
+' GestoreNoleggi usa GestoreAttrezzatura per il vincolo armadietti
+GestoreNoleggi ..> GestoreAttrezzatura : usa
+
+' GestoreCarnet usa GestoreNoleggi per il vincolo di apertura
+' stagionale sulle prenotazioni (RF18)
+GestoreCarnet ..> GestoreNoleggi : usa
+}
+@enduml
