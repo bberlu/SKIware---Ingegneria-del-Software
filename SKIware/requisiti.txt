@@ -1,0 +1,40 @@
+SKIware - Requisiti
+
+Requisiti software
+------------------
+1. Python 3.10 o superiore
+   Verifica con:  python3 --version
+
+2. PyQt6 (libreria per l'interfaccia grafica)
+   Installazione:  pip3 install PyQt6
+
+Nessun altro requisito: il resto usa solo la libreria standard
+di Python (json, datetime, unittest).
+
+Requisiti funzionali principali
+-------------------------------
+- Gestione clienti: inserimento, modifica, ricerca (per codice,
+  codice fiscale o nome e cognome) ed eliminazione
+- Gestione attrezzatura: sci, snowboard, scarponi, caschi, armadietti
+  con stato "Disponibile" / "Assegnato"
+- Carnet: a ingressi (es. 10 o 20 noleggi) o stagionale,
+  con credito che non può mai andare sotto zero
+- Prenotazioni: con almeno 24 ore di anticipo e carnet attivo;
+  ogni prenotazione scala un ingresso dal carnet e blocca
+  l'attrezzatura per il giorno e la fascia oraria indicati
+- Disdetta: rimborso dell'ingresso solo se effettuata almeno
+  48 ore prima dell'inizio del servizio
+- Assegnamenti (noleggi) e prenotazioni: solo nella stagione di apertura
+  (dal 1 dicembre al 10 aprile inclusi);
+  per gli sci è obbligatorio il valore DIN impostato dallo skiman
+  prima della consegna; ricevuta emessa automaticamente
+- Armadietto: assegnabile solo a un cliente con un noleggio
+  di attrezzatura principale (sci o snowboard) attivo
+- Backup: copia giornaliera automatica di tutti i dati (ore 23:30);
+  disponibile anche il backup manuale dal menu principale
+- Password: almeno 7 caratteri alfanumerici, validata alla creazione
+  e a ogni modifica dell'utente
+- Accesso: autenticazione con codice utente e password, differenziata
+  per ruolo (l'amministratore accede a tutto, gli skiman hanno accesso parziale e 
+  i clienti non accedono al sistema)
+- Persistenza: tutti i dati sono salvati in file json
